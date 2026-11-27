@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="275" height="125" viewBox="0 0 275 125" shape-rendering="crispEdges">
   <rect x="0" y="0" width="275" height="125" fill="#0b1221" stroke="#1e293b" stroke-width="2" />
   <rect x="0" y="0" width="4" height="125" fill="#ff2a2a" />
-  <text x="16" y="30" fill="#00aaff" font-family="monospace" font-size="15" font-weight="bold">portfolio_arquitetura_undb</text>
-  <text x="258" y="30" fill="#ff2a2a" font-family="monospace" font-size="13" font-weight="bold" text-anchor="end">★ 0</text>
-  <text x="16" y="54" fill="#94a3b8" font-family="monospace" font-size="12">Portfólio para Apresentação de Projetos do</text><text x="16" y="72" fill="#94a3b8" font-family="monospace" font-size="12">Curso de Arquitetura da Unidade de Ensi...</text>
-  <rect x="16" y="100" width="8" height="8" fill="#e34c26" />
-  <text x="30" y="108" fill="#cbd5e1" font-family="monospace" font-size="12">HTML</text>
+  <text x="16" y="30" fill="#00aaff" font-family="monospace" font-size="15" font-weight="bold">skill_biblia_ixc</text>
+  <text x="258" y="30" fill="#ff2a2a" font-family="monospace" font-size="12" font-weight="bold" text-anchor="end">2026-09-14</text>
+  <text x="16" y="54" fill="#94a3b8" font-family="monospace" font-size="12">Bíblia IXC — Base de Conhecimento e Skill</text><text x="16" y="72" fill="#94a3b8" font-family="monospace" font-size="12">definitiva do ERP IXC Soft para IAs...</text>
+  <rect x="16" y="100" width="8" height="8" fill="#3572A5" />
+  <text x="30" y="108" fill="#cbd5e1" font-family="monospace" font-size="12">Python</text>
 </svg>
