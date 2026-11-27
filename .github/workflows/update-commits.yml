@@ -1,0 +1,29 @@
+name: Atualizar Grade de Commits (3 Meses)
+
+on:
+  schedule:
+    - cron: "0 3 * * *" # Roda diariamente às 00:00 (horário de Brasília)
+  workflow_dispatch:    # Permite rodar manualmente pela aba Actions
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+
+      - name: Gerar SVG pixelizado
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 generate_grid.py
+
+      - name: Salvar gráfico atualizado
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add commits-3m.svg
+          git diff --staged --quiet || git commit -m "chore: update 3m pixel commit grid"
+          git push
