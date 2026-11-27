@@ -2,8 +2,12 @@ name: Atualizar Grade de Commits (3 Meses)
 
 on:
   schedule:
-    - cron: "0 3 * * *" # Roda diariamente às 00:00 (horário de Brasília)
-  workflow_dispatch:    # Permite rodar manualmente pela aba Actions
+    - cron: "0 3 * * *" # Roda diariamente às 00:00 (Brasília)
+  push:
+    paths:
+      - "generate_grid.py"
+      - ".github/workflows/update-commits.yml"
+  workflow_dispatch:    # Botão manual na aba Actions
 
 permissions:
   contents: write
@@ -15,7 +19,7 @@ jobs:
       - name: Baixar repositório
         uses: actions/checkout@v4
 
-      - name: Gerar SVG pixelizado
+      - name: Gerar SVGs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python3 generate_grid.py
