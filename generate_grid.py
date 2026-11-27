@@ -8,7 +8,6 @@ from datetime import datetime, timedelta, timezone
 USERNAME = "ospider75"
 TOKEN = os.environ["GITHUB_TOKEN"]
 
-# Escala de preto (#0d1117) até azul ciano elétrico (#00f0ff)
 COLORS = [
     "#0d1117",  # 0 commits (preto GitHub dark)
     "#0a2540",  # 1-2 commits (azul petróleo escuro)
@@ -32,7 +31,13 @@ def get_color(count):
     return COLORS[4]
 
 
-def wrap_text(text, max_chars=42, max_lines=2):
+def truncate_title(title, max_len=21):
+    if len(title) <= max_len:
+        return title
+    return title[: max_len - 1].rstrip("_") + "…"
+
+
+def wrap_text(text, max_chars=34, max_lines=2):
     if not text:
         return ["No description provided."]
     words = text.split()
@@ -132,7 +137,6 @@ for col_idx, week in enumerate(weeks):
     if days:
         first_day_month = int(days[0]["date"].split("-")[1])
         if first_day_month != last_month:
-            # Evita sobreposição caso a primeira semana tenha apenas 1-2 dias do mês anterior
             if col_idx > 0 or len(days) >= 4:
                 x_pos = pad_left + col_idx * pixel_size
                 month_labels.append(
@@ -148,14 +152,12 @@ for col_idx, week in enumerate(weeks):
             f'<rect x="{x}" y="{y}" width="{pixel_size}" height="{pixel_size}" fill="{color}" />'
         )
 
-# Rótulos dos dias da semana (Mon = linha 1, Wed = linha 3, Fri = linha 5)
 day_labels = [
     f'<text x="{pad_left - 8}" y="{pad_top + 1 * pixel_size + 13}" fill="#8b949e" font-family="monospace" font-size="11" text-anchor="end">Mon</text>',
     f'<text x="{pad_left - 8}" y="{pad_top + 3 * pixel_size + 13}" fill="#8b949e" font-family="monospace" font-size="11" text-anchor="end">Wed</text>',
     f'<text x="{pad_left - 8}" y="{pad_top + 5 * pixel_size + 13}" fill="#8b949e" font-family="monospace" font-size="11" text-anchor="end">Fri</text>',
 ]
 
-# Legenda inferior direita: Less [■ ■ ■ ■ ■] More
 legend_y = pad_top + grid_h + 14
 legend_box = 11
 legend_gap = 3
@@ -199,7 +201,8 @@ top_repos = all_repos[:3]
 
 repo_links_md = []
 for idx, repo in enumerate(top_repos):
-    name = html.escape(repo["name"])
+    raw_name = repo["name"]
+    display_name = html.escape(truncate_title(raw_name))
     stars = repo["stargazerCount"]
     lang = repo["primaryLanguage"]["name"] if repo["primaryLanguage"] else "Code"
     lang_color = repo["primaryLanguage"]["color"] if repo["primaryLanguage"] else "#00aaff"
@@ -209,13 +212,11 @@ for idx, repo in enumerate(top_repos):
     for line_idx, line in enumerate(desc_lines):
         desc_svg += f'<text x="16" y="{54 + line_idx * 18}" fill="#94a3b8" font-family="monospace" font-size="12">{line}</text>'
 
-    badge = f"★ {stars}" if stars > 0 else repo["pushedAt"][:10]
-
-    card_svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="275" height="125" viewBox="0 0 275 125" shape-rendering="crispEdges">
-  <rect x="0" y="0" width="275" height="125" fill="#0b1221" stroke="#1e293b" stroke-width="2" />
+    card_svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="280" height="125" viewBox="0 0 280 125" shape-rendering="crispEdges">
+  <rect x="0" y="0" width="280" height="125" fill="#0b1221" stroke="#1e293b" stroke-width="2" />
   <rect x="0" y="0" width="4" height="125" fill="#ff2a2a" />
-  <text x="16" y="30" fill="#00aaff" font-family="monospace" font-size="15" font-weight="bold">{name}</text>
-  <text x="258" y="30" fill="#ff2a2a" font-family="monospace" font-size="12" font-weight="bold" text-anchor="end">{badge}</text>
+  <text x="16" y="30" fill="#00aaff" font-family="monospace" font-size="15" font-weight="bold">{display_name}</text>
+  <text x="264" y="30" fill="#ff2a2a" font-family="monospace" font-size="13" font-weight="bold" text-anchor="end">★ {stars}</text>
   {desc_svg}
   <rect x="16" y="100" width="8" height="8" fill="{lang_color}" />
   <text x="30" y="108" fill="#cbd5e1" font-family="monospace" font-size="12">{html.escape(lang)}</text>
@@ -225,7 +226,7 @@ for idx, repo in enumerate(top_repos):
     with open(filename, "w", encoding="utf-8") as f:
         f.write(card_svg)
 
-    repo_links_md.append(f'<a href="{repo["url"]}"><img src="./{filename}" alt="{name}" /></a>')
+    repo_links_md.append(f'<a href="{repo["url"]}"><img src="./{filename}" alt="{html.escape(raw_name)}" /></a>')
 
 # 3. Atualizar README.md
 with open("README.md", "r", encoding="utf-8") as f:
