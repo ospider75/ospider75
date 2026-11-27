@@ -1,6 +1,11 @@
 ### 📌 Projetos Populares
 
 <!-- TOP_REPOS_START -->
+<p align="left">
+  <a href="https://github.com/ospider75/ospider75"><img src="./repo-0.svg" alt="ospider75" /></a>
+  <a href="https://github.com/ospider75/portfolio_arquitetura_undb"><img src="./repo-1.svg" alt="portfolio_arquitetura_undb" /></a>
+  <a href="https://github.com/ospider75/skill_biblia_ixc"><img src="./repo-2.svg" alt="skill_biblia_ixc" /></a>
+</p>
 <!-- TOP_REPOS_END -->
 
 ---
