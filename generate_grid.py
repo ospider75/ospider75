@@ -5,7 +5,7 @@ import re
 import urllib.request
 from datetime import datetime, timedelta, timezone
 
-USERNAME = "kalilmacedodev"
+USERNAME = os.environ.get("GITHUB_REPOSITORY_OWNER", "kalilmacedodev")
 TOKEN = os.environ["GITHUB_TOKEN"]
 
 COLORS = [
@@ -31,13 +31,13 @@ def get_color(count):
     return COLORS[4]
 
 
-def truncate_title(title, max_len=21):
+def truncate_title(title, max_len=19):
     if len(title) <= max_len:
         return title
     return title[: max_len - 1].rstrip("_") + "…"
 
 
-def wrap_text(text, max_chars=34, max_lines=2):
+def wrap_text(text, max_chars=31, max_lines=2):
     if not text:
         return ["No description provided."]
     words = text.split()
@@ -61,9 +61,9 @@ now = datetime.now(timezone.utc)
 start = now - timedelta(days=90)
 
 query = """
-query($userName:String!, $from:DateTime!, $to:DateTime!) {
+query($userName:String!, $from:DateTime!,$to:DateTime!) {
   user(login: $userName) {
-    repositories(first: 20, privacy: PUBLIC, isFork: false, ownerAffiliations: OWNER, orderBy: {field: PUSHED_AT, direction: DESC}) {
+    repositories(first: 30, privacy: PUBLIC, isFork: false, ownerAffiliations: OWNER, orderBy: {field: PUSHED_AT, direction: DESC}) {
       nodes {
         name
         description
@@ -76,7 +76,7 @@ query($userName:String!, $from:DateTime!, $to:DateTime!) {
         }
       }
     }
-    contributionsCollection(from: $from, to: $to) {
+    contributionsCollection(from: $from, to:$to) {
       contributionCalendar {
         totalContributions
         weeks {
@@ -191,15 +191,17 @@ commits_svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{svg_w}" height
 with open("commits-3m.svg", "w", encoding="utf-8") as f:
     f.write(commits_svg)
 
-# 2. Filtrar e Ordenar: Estrelas DESC -> Mais Recentes (pushedAt) DESC
+# 2. Filtrar e Ordenar 6 Projetos: Estrelas DESC -> Mais Recentes (pushedAt) DESC
 all_repos = [
     r for r in data["repositories"]["nodes"]
     if r["name"].lower() != USERNAME.lower()
 ]
 all_repos.sort(key=lambda r: (r["stargazerCount"], r["pushedAt"] or ""), reverse=True)
-top_repos = all_repos[:3]
+top_repos = all_repos[:6]
 
+ts = int(now.timestamp())
 repo_links_md = []
+
 for idx, repo in enumerate(top_repos):
     raw_name = repo["name"]
     display_name = html.escape(truncate_title(raw_name))
@@ -210,33 +212,38 @@ for idx, repo in enumerate(top_repos):
 
     desc_svg = ""
     for line_idx, line in enumerate(desc_lines):
-        desc_svg += f'<text x="16" y="{54 + line_idx * 18}" fill="#94a3b8" font-family="monospace" font-size="12">{line}</text>'
+        desc_svg += f'<text x="14" y="{52 + line_idx * 17}" fill="#94a3b8" font-family="monospace" font-size="11.5">{line}</text>'
 
-    card_svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="280" height="125" viewBox="0 0 280 125" shape-rendering="crispEdges">
-  <rect x="0" y="0" width="280" height="125" fill="#0b1221" stroke="#1e293b" stroke-width="2" />
-  <rect x="0" y="0" width="4" height="125" fill="#ff2a2a" />
-  <text x="16" y="30" fill="#00aaff" font-family="monospace" font-size="15" font-weight="bold">{display_name}</text>
-  <text x="264" y="30" fill="#ff2a2a" font-family="monospace" font-size="13" font-weight="bold" text-anchor="end">★ {stars}</text>
+    card_svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="260" height="120" viewBox="0 0 260 120" shape-rendering="crispEdges">
+  <rect x="0" y="0" width="260" height="120" fill="#0b1221" stroke="#1e293b" stroke-width="2" />
+  <rect x="0" y="0" width="4" height="120" fill="#ff2a2a" />
+  <text x="14" y="28" fill="#00aaff" font-family="monospace" font-size="14" font-weight="bold">{display_name}</text>
+  <text x="246" y="28" fill="#ff2a2a" font-family="monospace" font-size="12" font-weight="bold" text-anchor="end">★ {stars}</text>
   {desc_svg}
-  <rect x="16" y="100" width="8" height="8" fill="{lang_color}" />
-  <text x="30" y="108" fill="#cbd5e1" font-family="monospace" font-size="12">{html.escape(lang)}</text>
+  <rect x="14" y="96" width="8" height="8" fill="{lang_color}" />
+  <text x="28" y="104" fill="#cbd5e1" font-family="monospace" font-size="11.5">{html.escape(lang)}</text>
 </svg>'''
 
     filename = f"repo-{idx}.svg"
     with open(filename, "w", encoding="utf-8") as f:
         f.write(card_svg)
 
-    repo_links_md.append(f'<a href="{repo["url"]}"><img src="./{filename}" alt="{html.escape(raw_name)}" /></a>')
+    repo_links_md.append(
+        f'<a href="{repo["url"]}"><img src="./{filename}?v={ts}" alt="{html.escape(raw_name)}" /></a>'
+    )
 
-# 3. Atualizar README.md
+# 3. Atualizar README.md em 2 linhas de 3 projetos (3x2)
+row_1 = "\n  ".join(repo_links_md[:3])
+row_2 = "\n  ".join(repo_links_md[3:6])
+
+rows_html = f'<p align="left">\n  {row_1}\n</p>'
+if row_2:
+    rows_html += f'\n<p align="left">\n  {row_2}\n</p>'
+
+new_block = f"<!-- TOP_REPOS_START -->\n{rows_html}\n<!-- TOP_REPOS_END -->"
+
 with open("README.md", "r", encoding="utf-8") as f:
     readme = f.read()
-
-new_block = (
-    "<!-- TOP_REPOS_START -->\n"
-    '<p align="left">\n  ' + "\n  ".join(repo_links_md) + "\n</p>\n"
-    "<!-- TOP_REPOS_END -->"
-)
 
 if "<!-- TOP_REPOS_START -->" in readme and "<!-- TOP_REPOS_END -->" in readme:
     updated_readme = re.sub(
@@ -246,7 +253,13 @@ if "<!-- TOP_REPOS_START -->" in readme and "<!-- TOP_REPOS_END -->" in readme:
         flags=re.DOTALL,
     )
 else:
-    updated_readme = f"### 📌 Featured Projects\n\n{new_block}\n\n---\n\n{readme}"
+    updated_readme = f"### 📌 Projetos Populares\n\n{new_block}\n\n---\n\n{readme}"
+
+updated_readme = re.sub(
+    r'(\./commits-3m\.svg)(\?v=\d+)?',
+    rf'\1?v={ts}',
+    updated_readme,
+)
 
 with open("README.md", "w", encoding="utf-8") as f:
     f.write(updated_readme)
