@@ -5,7 +5,7 @@ import re
 import urllib.request
 from datetime import datetime, timedelta, timezone
 
-USERNAME = "ospider75"
+USERNAME = "kalilmacedodev"
 TOKEN = os.environ["GITHUB_TOKEN"]
 
 COLORS = [
