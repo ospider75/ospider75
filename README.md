@@ -18,7 +18,7 @@ I believe Artificial Intelligence should be a means, not an end. Its true purpos
 
 ---
 
-### 📊 Atividade (Últimos 3 Meses)
+### 📊 Activity (Last 3 Months)
 
 <p align="left">
   <img src="./commits-3m.svg?v=1795829228" alt="Commits dos últimos 3 meses" />
