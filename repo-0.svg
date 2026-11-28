@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="260" height="120" viewBox="0 0 260 120" shape-rendering="crispEdges">
   <rect x="0" y="0" width="260" height="120" fill="#0b1221" stroke="#1e293b" stroke-width="2" />
   <rect x="0" y="0" width="4" height="120" fill="#ff2a2a" />
-  <text x="14" y="28" fill="#00aaff" font-family="monospace" font-size="14" font-weight="bold">portfolio_arquitet…</text>
+  <text x="14" y="28" fill="#00aaff" font-family="monospace" font-size="14" font-weight="bold">ps4-pkg-streamer</text>
   <text x="246" y="28" fill="#ff2a2a" font-family="monospace" font-size="12" font-weight="bold" text-anchor="end">★ 0</text>
-  <text x="14" y="52" fill="#94a3b8" font-family="monospace" font-size="11.5">Portfólio para Apresentação de</text><text x="14" y="69" fill="#94a3b8" font-family="monospace" font-size="11.5">Projetos do Curso de...</text>
-  <rect x="14" y="96" width="8" height="8" fill="#e34c26" />
-  <text x="28" y="104" fill="#cbd5e1" font-family="monospace" font-size="11.5">HTML</text>
+  <text x="14" y="52" fill="#94a3b8" font-family="monospace" font-size="11.5">Fast, zero-dependency Python</text><text x="14" y="69" fill="#94a3b8" font-family="monospace" font-size="11.5">GUI &amp; batch queue manager to...</text>
+  <rect x="14" y="96" width="8" height="8" fill="#3572A5" />
+  <text x="28" y="104" fill="#cbd5e1" font-family="monospace" font-size="11.5">Python</text>
 </svg>
