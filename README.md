@@ -1,4 +1,4 @@
-### 📌 Projetos Populares
+### 📌 Popular Repositories
 
 <!-- TOP_REPOS_START -->
 <p align="left">
