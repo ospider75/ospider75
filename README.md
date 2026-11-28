@@ -2,9 +2,9 @@
 
 <!-- TOP_REPOS_START -->
 <p align="left">
-  <a href="https://github.com/kalilmacedodev/portfolio_arquitetura_undb"><img src="./repo-0.svg" alt="portfolio_arquitetura_undb" /></a>
-  <a href="https://github.com/kalilmacedodev/skill_biblia_ixc"><img src="./repo-1.svg" alt="skill_biblia_ixc" /></a>
-  <a href="https://github.com/kalilmacedodev/adriano_cobuccio"><img src="./repo-2.svg" alt="adriano_cobuccio" /></a>
+  <a href="https://github.com/kalilmacedodev/portfolio_arquitetura_undb"><img src="./repo-0.svg?v=1795829228" alt="portfolio_arquitetura_undb" /></a>
+  <a href="https://github.com/kalilmacedodev/skill_biblia_ixc"><img src="./repo-1.svg?v=1795829228" alt="skill_biblia_ixc" /></a>
+  <a href="https://github.com/kalilmacedodev/adriano_cobuccio"><img src="./repo-2.svg?v=1795829228" alt="adriano_cobuccio" /></a>
 </p>
 <!-- TOP_REPOS_END -->
 
@@ -21,5 +21,5 @@ I believe Artificial Intelligence should be a means, not an end. Its true purpos
 ### 📊 Atividade (Últimos 3 Meses)
 
 <p align="left">
-  <img src="./commits-3m.svg" alt="Commits dos últimos 3 meses" />
+  <img src="./commits-3m.svg?v=1795829228" alt="Commits dos últimos 3 meses" />
 </p>
